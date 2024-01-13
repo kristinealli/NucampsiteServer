@@ -1,57 +1,61 @@
 const express = require("express");
 const Partner = require("../models/partner");
+const authenticate = require("../authenticate");
+
 const partnerRouter = express.Router();
 
-partnerRouter.route("/")
+partnerRouter
+	.route("/")
 
 	.get((req, res, next) => {
 		Partner.find()
-			.then(partners => res.status(200).json(partners))
+			.then((partners) => res.status(200).json(partners))
 			.catch((err) => next(err));
 	})
 
-	.post((req, res, next) => {
+	.post(authenticate.verifyUser, (req, res, next) => {
 		Partner.create(req.body)
-			.then(partner => res.status(200).json(partner))
+			.then((partner) => res.status(200).json(partner))
 			.catch((err) => next(err));
 	})
 
-	.put((req, res) => {
+	.put(authenticate.verifyUser, (req, res) => {
 		res.statusCode = 403;
 		res.end("PUT operation not supported on /partners");
 	})
 
-	.delete((req, res, next) => {
+	.delete(authenticate.verifyUser, (req, res, next) => {
 		Partner.deleteMany()
-			.then(partners => res.status(200).json(partners))
+			.then((partners) => res.status(200).json(partners))
 			.catch((err) => next(err));
 	});
 
-partnerRouter.route("/:partnerId")
+partnerRouter
+	.route("/:partnerId")
 
 	.get((req, res, next) => {
 		Partner.findById(req.params.partnerId)
-		.then(partner => res.status(200).json(partner))
-		.catch((err) => next(err));
+			.then((partner) => res.status(200).json(partner))
+			.catch((err) => next(err));
 	})
-	
-	.post((req, res) => {
+
+	.post(authenticate.verifyUser, (req, res) => {
 		res.statusCode = 403;
 		res.end(
 			`POST operation not supported on /partners/${req.params.partnerId}`
 		);
 	})
 
-	.put((req, res, next) => {
+	.put(authenticate.verifyUser, (req, res, next) => {
 		Partner.findByIdAndUpdate(req.params.partnerId, req.body, { new: true })
-		.then((partner) => res.status(200).json(partner))
-		.catch((err) => next(err));
+			.then((partner) => res.status(200).json(partner))
+			.catch((err) => next(err));
 	})
 
-	.delete((req, res, next) => {
+	.delete(authenticate.verifyUser, (req, res, next) => {
 		Partner.findByIdAndDelete(req.params.partnerId)
-		.then((partner) => res.status(200).json(partner))
-		.catch((err) => next(err));
+			.then((partner) => res.status(200).json(partner))
+			.catch((err) => next(err));
 	});
 	
 module.exports = partnerRouter;
