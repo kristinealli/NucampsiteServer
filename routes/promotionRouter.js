@@ -13,22 +13,30 @@ promotionRouter
 			.catch((err) => next(err));
 	})
 
-	.post(authenticate.verifyUser, (req, res, next) => {
-		Promotion.create(req.body)
-			.then((promotions) => res.status(200).json(promotions))
-			.catch((err) => next(err));
-	})
+	.post(
+		authenticate.verifyUser,
+		authenticate.verifyAdmin,
+		(req, res, next) => {
+			Promotion.create(req.body)
+				.then((promotions) => res.status(200).json(promotions))
+				.catch((err) => next(err));
+		}
+	)
 
 	.put(authenticate.verifyUser, (req, res) => {
 		res.statusCode = 403;
 		res.end("PUT operation not supported on /promotions");
 	})
 
-	.delete(authenticate.verifyUser, (req, res, next) => {
-		Promotion.deleteMany()
-			.then((promotions) => res.status(200).json(promotions))
-			.catch((err) => next(err));
-	});
+	.delete(
+		authenticate.verifyUser,
+		authenticate.verifyAdmin,
+		(req, res, next) => {
+			Promotion.deleteMany()
+				.then((promotions) => res.status(200).json(promotions))
+				.catch((err) => next(err));
+		}
+	);
 
 promotionRouter
 	.route("/:promotionId")
@@ -46,18 +54,26 @@ promotionRouter
 		);
 	})
 
-	.put(authenticate.verifyUser, (req, res, next) => {
-		Promotion.findByIdAndUpdate(req.params.promotionId, req.body, {
-			new: true,
-		})
-			.then((promotions) => res.status(200).json(promotions))
-			.catch((err) => next(err));
-	})
+	.put(
+		authenticate.verifyUser,
+		authenticate.verifyAdmin,
+		(req, res, next) => {
+			Promotion.findByIdAndUpdate(req.params.promotionId, req.body, {
+				new: true,
+			})
+				.then((promotions) => res.status(200).json(promotions))
+				.catch((err) => next(err));
+		}
+	)
 
-	.delete(authenticate.verifyUser, (req, res, next) => {
-		Promotion.findByIdAndDelete(req.params.promotionId)
-			.then((promotions) => res.status(200).json(promotions))
-			.catch((err) => next(err));
-	});
+	.delete(
+		authenticate.verifyUser,
+		authenticate.verifyAdmin,
+		(req, res, next) => {
+			Promotion.findByIdAndDelete(req.params.promotionId)
+				.then((promotions) => res.status(200).json(promotions))
+				.catch((err) => next(err));
+		}
+	);
 
 module.exports = promotionRouter;

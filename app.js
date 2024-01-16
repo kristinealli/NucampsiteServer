@@ -13,39 +13,38 @@ const partnerRouter = require("./routes/partnerRouter"); //partnerRouter.js in r
 
 const mongoose = require("mongoose"); //mongoose ODM
 
-const url = config.mongoUrl; 
+const url = config.mongoUrl;
 const connect = mongoose.connect(url, {
 	useCreateIndex: true,
 	useFindAndModify: false,
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
-}); 
+});
 
 //log connection status
 connect.then(
 	() => console.log("Connected correctly to server"),
 	(err) => console.log(err)
-); 
+);
 
 //create express app
-var app = express(); 
+var app = express();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views")); //set views directory
 app.set("view engine", "pug"); //set view engine to pug
 
 //app.use(express.json()); //use express.json middleware
-app.use(logger("dev")); 
-app.use(express.json()); 
-app.use(express.urlencoded({ extended: false })); 
-
+app.use(logger("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.use(passport.initialize());
 
-app.use("/", indexRouter); 
-app.use("/users", usersRouter); 
+app.use("/", indexRouter);
+app.use("/users", usersRouter);
 
-app.use(express.static(path.join(__dirname, "public"))); 
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/campsites", campsiteRouter);
 app.use("/promotions", promotionRouter);
@@ -57,10 +56,10 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
-	res.locals.message = err.message; 
+	res.locals.message = err.message;
 	res.locals.error = req.app.get("env") === "development" ? err : {};
 	res.status(err.status || 500);
 	res.render("error");
 });
 
-module.exports = app; 
+module.exports = app;

@@ -17,14 +17,15 @@ const commentSchema = new Schema(
 			required: true,
 		},
 		author: {
-			type: String,
-			required: true,
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "User",
 		},
 	},
 	{ timestamps: true }
 );
 
-const campsiteSchema = new Schema({
+const campsiteSchema = new Schema(
+	{
 		name: {
 			type: String,
 			required: true,
@@ -36,25 +37,27 @@ const campsiteSchema = new Schema({
 		},
 		image: {
 			type: String,
-			required: true
+			required: true,
 		},
 		elevation: {
-			type: Number, 
-			required: true
+			type: Number,
+			required: true,
 		},
 		cost: {
 			type: Currency,
 			required: true,
-			min: 0
+			min: 0,
 		},
 		featured: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
-	comments: [commentSchema]
-},  {
-	timestamps: true,
-});
+		comments: [commentSchema],
+	},
+	{
+		timestamps: true,
+	}
+);
 
 const Campsite = mongoose.model("Campsite", campsiteSchema);
 
