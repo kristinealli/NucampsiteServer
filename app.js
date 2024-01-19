@@ -30,6 +30,15 @@ connect.then(
 //create express app
 var app = express();
 
+app.all('*', (req, res, next) => {
+	if (req.secure) {
+		return next();
+	} else {
+		console.log(`Redirecting to: https://${req.hostname}:${app.get('secPort')}${req.url}`);
+		res.redirect(301, `https://${req.hostname}:${app.get('secPort')}${req.url}`);
+	}
+}); // Catch all HTTP methods, uses * as a wildcard
+
 // view engine setup
 app.set("views", path.join(__dirname, "views")); //set views directory
 app.set("view engine", "pug"); //set view engine to pug
