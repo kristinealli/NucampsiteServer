@@ -10,6 +10,7 @@ var usersRouter = require("./routes/users"); //users.js in routes folder
 const campsiteRouter = require("./routes/campsiteRouter"); //campsiteRouter.js in routes folder
 const promotionRouter = require("./routes/promotionRouter"); //promotionRouter.js in routes folder
 const partnerRouter = require("./routes/partnerRouter"); //partnerRouter.js in routes folder
+const uploadRouter = require("./routes/uploadRouter"); //uploadRouter.js in routes folder
 
 const mongoose = require("mongoose"); //mongoose ODM
 
@@ -58,6 +59,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/campsites", campsiteRouter);
 app.use("/promotions", promotionRouter);
 app.use("/partners", partnerRouter);
+app.use("/imageUpload", uploadRouter);
 
 app.use(function (req, res, next) {
 	next(createError(404));
