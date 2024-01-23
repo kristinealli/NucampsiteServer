@@ -11,6 +11,7 @@ const campsiteRouter = require("./routes/campsiteRouter"); //campsiteRouter.js i
 const promotionRouter = require("./routes/promotionRouter"); //promotionRouter.js in routes folder
 const partnerRouter = require("./routes/partnerRouter"); //partnerRouter.js in routes folder
 const uploadRouter = require("./routes/uploadRouter"); //uploadRouter.js in routes folder
+const favoriteRouter = require("./routes/favoriteRouter"); //favoriteRouter.js in routes folder
 
 const mongoose = require("mongoose"); //mongoose ODM
 
@@ -60,6 +61,7 @@ app.use("/campsites", campsiteRouter);
 app.use("/promotions", promotionRouter);
 app.use("/partners", partnerRouter);
 app.use("/imageUpload", uploadRouter);
+app.use("/favorites", favoriteRouter);
 
 app.use(function (req, res, next) {
 	next(createError(404));
